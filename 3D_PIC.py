@@ -35,14 +35,14 @@ probe_charge = 0
 
 
 
-n_atoms = 1000
+n_atoms = 100
 
 
 m_e = 9.109*(10**(-31))
 m_i = 1.602*(10**(-27))
 
-e_charge = -1.661*(10**(-19))
-i_charge = 1.661*(10**(-19))
+e_charge = float(-1.661*(10**(-19)))
+i_charge = float(1.661*(10**(-19)))
 
 
 
@@ -51,13 +51,13 @@ boltz = 1.380649*(10**(-23.0))
 eps_o = 8.86*(10**(-12))
 
 #Time controls---------
-n_steps = 10000
+n_steps = 1000
 
 e_number_density = n_atoms/box_area
 print("number density: " + str(e_number_density))
 e_plasma_freq = (((e_number_density*(e_charge**2.0))/(m_e*eps_o))**0.5)/(2*pi) #Hz
 t = 0
-dt = 100000/(1*e_plasma_freq)
+dt = 1/(1*e_plasma_freq)
 t_f = dt*n_steps
 
 
@@ -183,6 +183,7 @@ for i in range(0, n_x_points-1):
                 charge_vector[(i + (j*n_x_points) + (k*n_x_points*n_x_points))] = ceiling_boundary
             else:
                 boundary_counter+=1
+            charge_vector[(i + (j*n_x_points) + (k*n_x_points*n_x_points))] = float(charge_vector[(i + (j*n_x_points) + (k*n_x_points*n_x_points))])
 
 charge_vector_base = charge_vector #between each step, we reset the charge vector to this base state to enforce the boundary conditions. 
 
@@ -212,24 +213,24 @@ def grid_assign(electron_positions, ion_positions):
         x_1 = int(x_int_index) 
         y_1 = int(y_int_index)
         z_1 = int(z_int_index)
-        w_1 = x_backwards_weight*y_backwards_weight*z_backwards_weight #weighting the charge assignment by area.
+        w_1 = float(x_backwards_weight*y_backwards_weight*z_backwards_weight) #weighting the charge assignment by area.
 
         #extrapolating to the other points. defined moving clockwise from the bottom left point (point 1), then going up a row. 
         #point 2
         x_2 = int(x_int_index)
         y_2 = int(y_int_index+1)
         z_2 = int(z_int_index)
-        w_2 = x_backwards_weight*y_forwards_weight*z_backwards_weight
+        w_2 = float(x_backwards_weight*y_forwards_weight*z_backwards_weight)
         #point 3
         x_3 = int(x_int_index+1)
         y_3 = int(y_int_index+1)
         z_3 = int(z_int_index)
-        w_3 = x_forward_weight*y_forwards_weight**z_backwards_weight
+        w_3 = float(x_forward_weight*y_forwards_weight*z_backwards_weight)
         #point 4
         x_4 = int(x_int_index+1)
         y_4 = int(y_int_index)
         z_4 = int(z_int_index) 
-        w_4 = x_forward_weight*y_backwards_weight**z_backwards_weight
+        w_4 = float(x_forward_weight*y_backwards_weight*z_backwards_weight)
         #upper row:
 
         #point 5
@@ -237,24 +238,24 @@ def grid_assign(electron_positions, ion_positions):
         x_5 = int(x_int_index) 
         y_5 = int(y_int_index)
         z_5 = int(z_int_index+1)
-        w_5 = x_backwards_weight*y_backwards_weight*z_forwards_weight #weighting the charge assignment by area.
+        w_5 = float(x_backwards_weight*y_backwards_weight*z_forwards_weight) #weighting the charge assignment by area.
 
 
         #point 6
         x_6 = int(x_int_index)
         y_6 = int(y_int_index+1)
         z_6 = int(z_int_index+1)
-        w_6 = x_backwards_weight*y_forwards_weight*z_forwards_weight
+        w_6 = float(x_backwards_weight*y_forwards_weight*z_forwards_weight)
         #point 7
         x_7 = int(x_int_index+1)
         y_7 = int(y_int_index+1)
         z_7 = int(z_int_index+1)
-        w_7 = x_forward_weight*y_forwards_weight**z_forwards_weight
+        w_7 = float(x_forward_weight*y_forwards_weight*z_forwards_weight)
         #point 8
         x_8 = int(x_int_index+1)
         y_8 = int(y_int_index)
         z_8 = int(z_int_index+1) 
-        w_8 = x_forward_weight*y_backwards_weight**z_forwards_weight
+        w_8 = float(x_forward_weight*y_backwards_weight*z_forwards_weight)
 
         charge_vector[((n_x_points-1)*y_1)+ x_1+ ((n_x_points-1)*(n_x_points-1)*z_1)] += ((w_1*e_charge)) 
         charge_vector[((n_x_points-1)*y_2)+ x_2+ ((n_x_points-1)*(n_x_points-1)*z_2)] += ((w_2*e_charge))
@@ -286,24 +287,24 @@ def grid_assign(electron_positions, ion_positions):
         x_1 = int(x_int_index) 
         y_1 = int(y_int_index)
         z_1 = int(z_int_index)
-        w_1 = x_backwards_weight*y_backwards_weight*z_backwards_weight #weighting the charge assignment by area.
+        w_1 = float(x_backwards_weight*y_backwards_weight*z_backwards_weight) #weighting the charge assignment by area.
 
         #extrapolating to the other points. defined moving clockwise from the bottom left point (point 1), then going up a row. 
         #point 2
         x_2 = int(x_int_index)
         y_2 = int(y_int_index+1)
         z_2 = int(z_int_index)
-        w_2 = x_backwards_weight*y_forwards_weight*z_backwards_weight
+        w_2 = float(x_backwards_weight*y_forwards_weight*z_backwards_weight)
         #point 3
         x_3 = int(x_int_index+1)
         y_3 = int(y_int_index+1)
         z_3 = int(z_int_index)
-        w_3 = x_forward_weight*y_forwards_weight**z_backwards_weight
+        w_3 = float(x_forward_weight*y_forwards_weight*z_backwards_weight)
         #point 4
         x_4 = int(x_int_index+1)
         y_4 = int(y_int_index)
         z_4 = int(z_int_index) 
-        w_4 = x_forward_weight*y_backwards_weight**z_backwards_weight
+        w_4 = float(x_forward_weight*y_backwards_weight*z_backwards_weight)
         #upper row:
 
         #point 5
@@ -311,24 +312,24 @@ def grid_assign(electron_positions, ion_positions):
         x_5 = int(x_int_index) 
         y_5 = int(y_int_index)
         z_5 = int(z_int_index+1)
-        w_5 = x_backwards_weight*y_backwards_weight*z_forwards_weight #weighting the charge assignment by area.
+        w_5 = float(x_backwards_weight*y_backwards_weight*z_forwards_weight) #weighting the charge assignment by area.
 
 
         #point 6
         x_6 = int(x_int_index)
         y_6 = int(y_int_index+1)
         z_6 = int(z_int_index+1)
-        w_6 = x_backwards_weight*y_forwards_weight*z_forwards_weight
+        w_6 = float(x_backwards_weight*y_forwards_weight*z_forwards_weight)
         #point 7
         x_7 = int(x_int_index+1)
         y_7 = int(y_int_index+1)
         z_7 = int(z_int_index+1)
-        w_7 = x_forward_weight*y_forwards_weight**z_forwards_weight
+        w_7 = float(x_forward_weight*y_forwards_weight*z_forwards_weight)
         #point 8
         x_8 = int(x_int_index+1)
         y_8 = int(y_int_index)
         z_8 = int(z_int_index+1) 
-        w_8 = x_forward_weight*y_backwards_weight**z_forwards_weight
+        w_8 = float(x_forward_weight*y_backwards_weight*z_forwards_weight)
 
         charge_vector[((n_x_points-1)*y_1)+ x_1+ ((n_x_points-1)*(n_x_points-1)*z_1)] += ((w_1*i_charge)) 
         charge_vector[((n_x_points-1)*y_2)+ x_2+ ((n_x_points-1)*(n_x_points-1)*z_2)] += ((w_2*i_charge))
@@ -549,7 +550,7 @@ ion_vy_position_plot = i_velocities[:, 1]
 ion_vz_position_plot = i_velocities[:, 2]
 
 counter = 0
-sample_rate = 100
+sample_rate = 1
 print("Running the main simulation...")
 print("side length " +str(n_x_points*x_spacing))
 print(e_positions)
@@ -606,3 +607,6 @@ with open("PIC_POSITIONS", "w") as f: #writing position data in such a way that 
             f.write("\n")   
             f.write(str(n+1 +n_atoms) + " " + str(2) + " " + str(ion_x_position_plot[timestep, n]/(x_spacing*n_x_points)) + " " + str(ion_y_position_plot[timestep, n]/(x_spacing*n_x_points))+ " " + str(ion_z_position_plot[timestep, n]/(x_spacing*n_x_points))) 
             f.write("\n")   
+
+
+
